@@ -1,0 +1,17 @@
+sdk:
+  endpoint:
+  accessKeyId:
+  accessKeySecret:
+
+rules:
+  project-name:
+    logstore-name:
+      - topic: xxx
+        keywords:
+          - xxx
+          - xxx
+
+notification:
+  wechat:
+    serverChanSckeys:
+        - xxxxx
