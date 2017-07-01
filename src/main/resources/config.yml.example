@@ -1,17 +1,24 @@
+# 阿里云SDK配置
 sdk:
-  endpoint:
-  accessKeyId:
-  accessKeySecret:
+  endpoint: xxx
+  accessKeyId: xxx
+  accessKeySecret: xxx
 
+# 日志匹配告警规则
 rules:
-  project-name:
-    logstore-name:
+  project_name:
+    log_store_name:
       - topic: xxx
         keywords:
           - xxx
-          - xxx
 
-notification:
-  wechat:
-    serverChanSckeys:
-        - xxxxx
+# 日志告警订阅配置
+subscribers:
+  project_name:
+    log_store_name:
+      - user1
+
+# 用户列表
+users:
+  - name: user1
+    serverChanSckey: xxx

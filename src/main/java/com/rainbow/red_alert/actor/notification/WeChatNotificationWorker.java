@@ -54,6 +54,15 @@ public class WeChatNotificationWorker extends UntypedActor {
             .singleRequest(httpRequest, materializer);
     }
 
+    /**
+     * 组装Server酱的发送URL
+     *
+     * @param scKey
+     * @param title
+     * @param description
+     * @return
+     * @throws UnsupportedEncodingException
+     */
     private String getFinalServerChanUri(String scKey, String title, String description) throws UnsupportedEncodingException {
         String uri = SERVICE_CHAN_BASE_URI + scKey + ".send?" + "text=" + HttpUtil.urlEncode(title);
         if (description != null) {

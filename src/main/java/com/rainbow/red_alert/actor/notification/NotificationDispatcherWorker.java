@@ -19,7 +19,6 @@ import java.util.Set;
 import static com.rainbow.red_alert.service.config.Configuration.User;
 
 public class NotificationDispatcherWorker extends UntypedActor {
-
     private LoggingAdapter log = Logging.getLogger(getContext().system(), this);
     private ActorRef weChatNotificationWorker;
 
@@ -68,6 +67,12 @@ public class NotificationDispatcherWorker extends UntypedActor {
         }
     }
 
+    /**
+     * 获取微信订阅者
+     *
+     * @param subscriberNames
+     * @return
+     */
     private List<WeChatSubscriber> getWeChatSubscribers(Set<String> subscriberNames) {
         List<User> users = ConfigService.getConfiguration()
                                         .getUsers();
@@ -87,6 +92,12 @@ public class NotificationDispatcherWorker extends UntypedActor {
         return weChatSubscribers;
     }
 
+    /**
+     * 发送微信通知
+     *
+     * @param weChatSubscribers
+     * @param message
+     */
     private void sendWeChatNotifications(List<WeChatSubscriber> weChatSubscribers, StartSendNotificationMessage message) {
         for (WeChatSubscriber weChatSubscriber : weChatSubscribers) {
             SendWeChatNotificationMessage sendWeChatNotificationMessage = new SendWeChatNotificationMessage(weChatSubscriber.getServerChanSckey(),
