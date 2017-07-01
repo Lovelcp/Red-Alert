@@ -111,7 +111,7 @@ public class NotificationDispatcherWorker extends UntypedActor {
     }
 
     private String getWeChatTitle(String logProjectName, String logStoreName, String topic) {
-        return logProjectName + " " + logStoreName + " " + topic;
+        return "Project:" + logProjectName + "|Logstore:" + logStoreName + "|Topic:" + topic;
     }
 
     private String getWeChatDescription(int fromTimestamp, int toTimestamp, String keyword) {
