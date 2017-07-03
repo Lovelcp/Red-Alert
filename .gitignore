@@ -151,4 +151,4 @@ buildNumber.properties
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar
 
-config.yml
+red-alert-monitor/src/main/resources/config.yml
