@@ -1,4 +1,4 @@
-package com.rainbow.red_alert.actor.http;
+package com.rainbow.red_alert.actor.rule;
 
 import akka.actor.ActorSelection;
 import akka.actor.UntypedActor;
@@ -8,8 +8,8 @@ import com.aliyun.openservices.log.Client;
 import com.aliyun.openservices.log.exception.LogException;
 import com.aliyun.openservices.log.request.GetHistogramsRequest;
 import com.aliyun.openservices.log.response.GetHistogramsResponse;
-import com.rainbow.red_alert.message.http.InitFetchLogWorkerMessage;
-import com.rainbow.red_alert.message.http.StartAnalyseLogMessage;
+import com.rainbow.red_alert.message.rule.InitAnalyseLogWorkerMessage;
+import com.rainbow.red_alert.message.rule.StartAnalyseLogMessage;
 import com.rainbow.red_alert.message.notification.StartSendNotificationMessage;
 import com.rainbow.red_alert.model.Rule;
 
@@ -49,12 +49,12 @@ public class AnalyseLogWorker extends UntypedActor {
     @Override
     public void preStart() throws Exception {
         super.preStart();
-        getSelf().tell(new InitFetchLogWorkerMessage(), getSelf());
+        getSelf().tell(new InitAnalyseLogWorkerMessage(), getSelf());
     }
 
     @Override
     public void onReceive(Object message) throws Throwable {
-        if (message instanceof InitFetchLogWorkerMessage) {
+        if (message instanceof InitAnalyseLogWorkerMessage) {
             initFetchLogWorker();
             log.debug("AnalyseLogWorker with project name {} and log store name {} has been initialized.", logProjectName, logStoreName);
         }

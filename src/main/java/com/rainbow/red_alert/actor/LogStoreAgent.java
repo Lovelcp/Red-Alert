@@ -5,7 +5,7 @@ import akka.actor.UntypedActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.aliyun.openservices.log.Client;
-import com.rainbow.red_alert.actor.http.AnalyseLogWorker;
+import com.rainbow.red_alert.actor.rule.AnalyseLogWorker;
 import com.rainbow.red_alert.message.InitLogStoreAgentMessage;
 import com.rainbow.red_alert.model.Rule;
 import com.rainbow.red_alert.service.config.ConfigService;

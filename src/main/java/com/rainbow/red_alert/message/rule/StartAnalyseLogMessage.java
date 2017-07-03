@@ -1,6 +1,6 @@
-package com.rainbow.red_alert.message.http;
+package com.rainbow.red_alert.message.rule;
 
-public class StartAnalyseLogMessage extends BaseHttpMessage {
+public class StartAnalyseLogMessage {
     private int fromTimestamp;
     private int toTimestamp;
 

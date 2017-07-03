@@ -5,28 +5,30 @@ import akka.actor.UntypedActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.aliyun.openservices.log.Client;
-import com.rainbow.red_alert.actor.http.ListLogStoreWorker;
+import com.aliyun.openservices.log.exception.LogException;
+import com.aliyun.openservices.log.response.ListLogStoresResponse;
 import com.rainbow.red_alert.message.InitLogProjectAgentMessage;
-import com.rainbow.red_alert.message.http.FinishListLogStoreMessage;
+import com.rainbow.red_alert.service.config.ConfigService;
+import com.rainbow.red_alert.service.config.Configuration;
 import com.rainbow.red_alert.util.ActorUtil;
 
-import java.util.ArrayList;
+import java.util.Set;
 
 public class LogProjectAgent extends UntypedActor {
     private LoggingAdapter log = Logging.getLogger(getContext().system(), this);
 
     private Client logClient;
-    private String projectName;
+    private String logProjectName;
 
     @Override
     public void preStart() throws Exception {
         super.preStart();
         getSelf().tell(new InitLogProjectAgentMessage(), getSelf());
-        log.debug("LogProjectAgent with project name[{}] started successfully", projectName);
+        log.debug("LogProjectAgent with project name[{}] started successfully", logProjectName);
     }
 
-    public LogProjectAgent(String projectName, Client logClient) {
-        this.projectName = projectName;
+    public LogProjectAgent(String logProjectName, Client logClient) {
+        this.logProjectName = logProjectName;
         this.logClient = logClient;
     }
 
@@ -34,32 +36,33 @@ public class LogProjectAgent extends UntypedActor {
     public void onReceive(Object message) throws Throwable {
         if (message instanceof InitLogProjectAgentMessage) {
             initLogProject();
-            log.debug("LogProjectAgent with project name[{}] init successfully", projectName);
-        }
-        else if (message instanceof FinishListLogStoreMessage) {
-            createLogStoreAgents((FinishListLogStoreMessage) message);
-            log.debug("LogProjectAgent with project name[{}] create log store agents successfully", projectName);
+            log.debug("LogProjectAgent with project name[{}] init successfully", logProjectName);
         }
     }
 
     /**
      * 初始化
      */
-    private void initLogProject() {
-        this.getContext()
-            .actorOf(Props.create(ListLogStoreWorker.class, projectName, logClient));
+    private void initLogProject() throws LogException {
+        createLogStoreAgents();
     }
 
     /**
      * 创建logstore agent
-     *
-     * @param message
      */
-    private void createLogStoreAgents(FinishListLogStoreMessage message) {
-        ArrayList<String> logStores = message.getLogStores();
-        for (String logStoreName : logStores) {
-            this.getContext()
-                .actorOf(Props.create(LogStoreAgent.class, logClient, projectName, logStoreName), ActorUtil.getActorName(LogStoreAgent.class, logStoreName));
+    private void createLogStoreAgents() throws LogException {
+        Configuration configuration = ConfigService.getConfiguration();
+        Set<String> logStoreNames = configuration.getRules()
+                                                 .get(logProjectName)
+                                                 .keySet();
+        for (String logStoreName : logStoreNames) {
+            ListLogStoresResponse response = logClient.ListLogStores(logProjectName, 0, 1, logStoreName);
+            if (!response.GetLogStores()
+                         .isEmpty()) {
+                this.getContext()
+                    .actorOf(Props.create(LogStoreAgent.class, logClient, logProjectName, logStoreName),
+                            ActorUtil.getActorName(LogStoreAgent.class, logStoreName));
+            }
         }
     }
 }
