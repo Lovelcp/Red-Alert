@@ -1,4 +1,4 @@
 package com.rainbow.red_alert.console.controller;
 
-public class SdkController {
+public class LogstoreController {
 }
