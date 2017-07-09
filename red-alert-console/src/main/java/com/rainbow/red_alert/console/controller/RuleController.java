@@ -1,7 +1,7 @@
 package com.rainbow.red_alert.console.controller;
 
 import com.rainbow.red_alert.console.dto.req.RuleReq;
-import com.rainbow.red_alert.console.model.Rule;
+import com.rainbow.red_alert.console.domain.Rule;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,4 +1,4 @@
-package com.rainbow.red_alert.console.model;
+package com.rainbow.red_alert.console.domain;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -12,8 +12,9 @@ import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
-@Table(name = "subscribers")
-public class Subscriber {
+@Table(name = "rules")
+public class Rule {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -21,8 +22,7 @@ public class Subscriber {
     @Column(name = "log_store_id")
     private Long logStoreId;
 
-    @Column(name = "user_id")
-    private Long userId;
+    private String keyword;
 
     @CreatedDate
     @Column(name = "created_at")
@@ -48,12 +48,12 @@ public class Subscriber {
         this.logStoreId = logStoreId;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getKeyword() {
+        return keyword;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
     public Date getCreatedAt() {
